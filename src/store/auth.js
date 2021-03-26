@@ -36,11 +36,9 @@ export const actions = {
     return await User.fetch(user_id)
       .then((response) => {
         commit("SET_USER", response.data.data);
-        console.log(2);
         return response;
       })
       .catch((error) => {
-        console.log(22);
         commit("SET_ERROR", error.response.data);
         return error;
       });
