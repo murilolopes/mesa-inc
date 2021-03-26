@@ -1,8 +1,7 @@
 import AXIOS from "./axios";
-
 export class Auth {
   static login({ email, password }) {
-    return AXIOS.post("/api/login", { email, password });
+    return AXIOS.post("https://reqres.in/api/login", { email, password });
   }
 
   static logout() {
