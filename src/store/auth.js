@@ -3,6 +3,7 @@ import { Auth } from "./../services/auth";
 export const state = {
   loggedUser: {},
   token: "",
+  error: {},
 };
 
 export const mutations = {
@@ -24,7 +25,10 @@ export const actions = {
         await dispatch("fetchUserData");
         return response;
       })
-      .catch((err) => err);
+      .catch(async (error) => {
+        commit("SET_ERROR", error.response.data);
+        return error;
+      });
   },
 
   fetchUserData(user_id = 2) {

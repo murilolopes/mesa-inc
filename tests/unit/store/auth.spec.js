@@ -43,7 +43,7 @@ describe("In a Auth Store", () => {
   });
 
   describe("Actions", () => {
-    it("login, should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
+    it("on successful login action should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
       let mockedAuthModule = authModule;
       mockedAuthModule.mutations.SET_TOKEN = jest.fn();
       mockedAuthModule.actions.fetchUserData = jest.fn();
@@ -78,6 +78,34 @@ describe("In a Auth Store", () => {
       expect(setTokenMutationSpy).toHaveBeenCalledWith(
         store.state.auth,
         data.token
+      );
+    });
+
+    it("when try to login with an invalid email action should call commit SET_ERROR mutation", async () => {
+      let mockedAuthModule = authModule;
+      mockedAuthModule.mutations.SET_ERROR = jest.fn();
+
+      const setErrorMutationSpy = jest.spyOn(
+        mockedAuthModule.mutations,
+        "SET_ERROR"
+      );
+
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...mockedAuthModule, namespaced: true },
+        },
+      });
+
+      const payload = {
+        email: "email@invalid.in",
+        password: "pistol",
+      };
+
+      const { response } = await store.dispatch("auth/login", payload);
+
+      expect(setErrorMutationSpy).toHaveBeenCalledWith(
+        store.state.auth,
+        response.data
       );
     });
   });
