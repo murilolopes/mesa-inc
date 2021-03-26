@@ -6,6 +6,42 @@ import { Auth } from "./../../../src/services/auth";
 Vue.use(Vuex);
 
 describe("In a Auth Store", () => {
+  describe("Mutations", () => {
+    it("SET_USER should update state with a given user data", async () => {
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...authModule, namespaced: true },
+        },
+      });
+
+      const userData = {
+        id: 2,
+        email: "janet.weaver@reqres.in",
+        first_name: "Janet",
+        last_name: "Weaver",
+        avatar: "https://reqres.in/img/faces/2-image.jpg",
+      };
+
+      await store.commit("auth/SET_USER", userData);
+
+      expect(store.state.auth.loggedUser).toEqual(userData);
+    });
+
+    it("SET_TOKEN should update state with a given user token", () => {
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...authModule, namespaced: true },
+        },
+      });
+
+      const token = "QpwL5tke4Pnpja7X4";
+
+      store.commit("auth/SET_TOKEN", token);
+
+      expect(store.state.auth.token).toEqual(token);
+    });
+  });
+
   describe("Actions", () => {
     it("login, should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
       let mockedAuthModule = authModule;
@@ -43,27 +79,6 @@ describe("In a Auth Store", () => {
         store.state.auth,
         data.token
       );
-    });
-  });
-  describe("Mutations", () => {
-    it("SET_USER should update state with a given user data", async () => {
-      const store = new Vuex.Store({
-        modules: {
-          auth: { ...authModule, namespaced: true },
-        },
-      });
-
-      const userData = {
-        id: 2,
-        email: "janet.weaver@reqres.in",
-        first_name: "Janet",
-        last_name: "Weaver",
-        avatar: "https://reqres.in/img/faces/2-image.jpg",
-      };
-
-      await store.commit("auth/SET_USER", userData);
-
-      expect(store.state.auth.loggedUser).toEqual(userData);
     });
   });
 });
