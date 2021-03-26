@@ -1,4 +1,5 @@
 import { Auth } from "./../services/auth";
+import { User } from "./../services/user";
 
 export const state = {
   loggedUser: {},
@@ -31,9 +32,17 @@ export const actions = {
       });
   },
 
-  fetchUserData(user_id = 2) {
-    console.log(1, user_id);
-    // params: {}, user_id
-    //TODO: action to fetch user data and call SET_USER mutation to fill state with user data
+  async fetchUserData({ commit }, user_id = 2) {
+    return await User.fetch(user_id)
+      .then((response) => {
+        commit("SET_USER", response.data.data);
+        console.log(2);
+        return response;
+      })
+      .catch((error) => {
+        console.log(22);
+        commit("SET_ERROR", error.response.data);
+        return error;
+      });
   },
 };

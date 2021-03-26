@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import * as authModule from "./../../../src/store/auth";
 import { Auth } from "./../../../src/services/auth";
+import { User } from "./../../../src/services/user";
 
 Vue.use(Vuex);
 
@@ -43,6 +44,66 @@ describe("In a Auth Store", () => {
   });
 
   describe("Actions", () => {
+    it("fetchUserData should call User.fetch service and SET_USER mutation", async () => {
+      let mockedAuthModule = authModule;
+      mockedAuthModule.mutations.SET_USER = jest.fn();
+
+      const userServiceSpy = jest.spyOn(User, "fetch");
+
+      const setUserMutationSpy = jest.spyOn(
+        mockedAuthModule.mutations,
+        "SET_USER"
+      );
+
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...mockedAuthModule, namespaced: true },
+        },
+      });
+
+      const returnedUser = {
+        id: 2,
+        email: "janet.weaver@reqres.in",
+        first_name: "Janet",
+        last_name: "Weaver",
+        avatar: "https://reqres.in/img/faces/2-image.jpg",
+      };
+
+      await store.dispatch("auth/fetchUserData");
+
+      expect(userServiceSpy).toHaveBeenCalledWith(returnedUser.id);
+      expect(setUserMutationSpy).toHaveBeenCalledWith(
+        store.state.auth,
+        returnedUser
+      );
+    });
+
+    it("fetchUserData should call User.fetch service and SET_ERROR mutation", async () => {
+      let mockedAuthModule = authModule;
+      mockedAuthModule.mutations.SET_ERROR = jest.fn();
+
+      const userServiceSpy = jest.spyOn(User, "fetch");
+
+      const setErrorMutationSpy = jest.spyOn(
+        mockedAuthModule.mutations,
+        "SET_ERROR"
+      );
+
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...mockedAuthModule, namespaced: true },
+        },
+      });
+
+      const { response } = await store.dispatch("auth/fetchUserData", 23);
+
+      expect(userServiceSpy).toHaveBeenCalledWith(23);
+      expect(setErrorMutationSpy).toHaveBeenCalledWith(
+        store.state.auth,
+        response.data
+      );
+    });
+
     it("on successful login action should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
       let mockedAuthModule = authModule;
       mockedAuthModule.mutations.SET_TOKEN = jest.fn();
