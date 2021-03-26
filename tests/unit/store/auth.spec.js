@@ -45,4 +45,25 @@ describe("In a Auth Store", () => {
       );
     });
   });
+  describe("Mutations", () => {
+    it("SET_USER should update state with a given user data", async () => {
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...authModule, namespaced: true },
+        },
+      });
+
+      const userData = {
+        id: 2,
+        email: "janet.weaver@reqres.in",
+        first_name: "Janet",
+        last_name: "Weaver",
+        avatar: "https://reqres.in/img/faces/2-image.jpg",
+      };
+
+      await store.commit("auth/SET_USER", userData);
+
+      expect(store.state.auth.loggedUser).toEqual(userData);
+    });
+  });
 });
