@@ -78,7 +78,7 @@ describe("In a Auth Store", () => {
       );
     });
 
-    it("on successful login action should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
+    it("login action should call Auth.login service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
       let mockedAuthModule = authModule;
       mockedAuthModule.mutations.SET_TOKEN = jest.fn();
       mockedAuthModule.actions.fetchUserData = jest.fn();
@@ -107,6 +107,48 @@ describe("In a Auth Store", () => {
       };
 
       const { data } = await store.dispatch("auth/login", payload);
+
+      expect(authServiceSpy).toHaveBeenCalledWith(payload);
+      expect(fetchUserDataActionSpy).toHaveBeenCalledTimes(1);
+      expect(setTokenMutationSpy).toHaveBeenCalledWith(
+        store.state.auth,
+        data.token
+      );
+    });
+
+    it.only("register action should call Auth.register service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
+      let mockedAuthModule = authModule;
+      mockedAuthModule.mutations.SET_TOKEN = jest.fn();
+      mockedAuthModule.actions.fetchUserData = jest.fn();
+
+      const authServiceSpy = jest.spyOn(Auth, "register");
+
+      const fetchUserDataActionSpy = jest.spyOn(
+        mockedAuthModule.actions,
+        "fetchUserData"
+      );
+
+      const setTokenMutationSpy = jest.spyOn(
+        mockedAuthModule.mutations,
+        "SET_TOKEN"
+      );
+
+      const store = new Vuex.Store({
+        modules: {
+          auth: { ...mockedAuthModule, namespaced: true },
+        },
+      });
+
+      const payload = {
+        email: "eve.holt@reqres.in",
+        password: "pistol",
+        full_name: "Murilo Ângelo Marques Lopes",
+        phone: "82996698304",
+        role: "Programmer",
+        confirm_password: "pistol",
+      };
+
+      const { data } = await store.dispatch("auth/register", payload);
 
       expect(authServiceSpy).toHaveBeenCalledWith(payload);
       expect(fetchUserDataActionSpy).toHaveBeenCalledTimes(1);

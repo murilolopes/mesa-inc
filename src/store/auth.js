@@ -30,6 +30,14 @@ export const actions = {
     });
   },
 
+  async register({ commit, dispatch }, payload) {
+    return await Auth.register(payload).then(async (response) => {
+      commit("SET_TOKEN", response.data.token);
+      await dispatch("fetchUserData");
+      return response;
+    });
+  },
+
   async fetchUserData({ commit }, user_id = 2) {
     return await User.fetch(user_id).then((response) => {
       commit("SET_USER", response.data.data);
