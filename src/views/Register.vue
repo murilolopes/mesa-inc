@@ -4,6 +4,11 @@
       <aside class="col-sm-4">
         <div class="card">
           <article class="card-body">
+            <h4 class="card-title mb-4 mt-1">Cadastrar</h4>
+            <hr />
+            <b-alert variant="danger" :show="hasError" dismissible>
+              {{ registerFormError }}
+            </b-alert>
             <form id="registerForm" @submit.prevent="sendRegistration">
               <div class="form-group input-group">
                 <input
@@ -61,7 +66,9 @@
                   Criar conta
                 </button>
               </div>
-              <p class="text-center">Já tem uma conta? <a href="">Entrar</a></p>
+              <p class="text-center">
+                Já tem uma conta? <router-link to="/login">Entrar</router-link>
+              </p>
             </form>
           </article>
         </div>
@@ -77,6 +84,7 @@ export default {
   name: "Register",
   data() {
     return {
+      registerFormError: "",
       registerForm: {
         full_name: "",
         email: "",
@@ -91,8 +99,14 @@ export default {
     ...mapActions("auth", ["register"]),
     sendRegistration() {
       console.log("sending:", { ...this.registerForm });
-
-      this.register(this.registerForm);
+      this.register(this.registerForm)
+        .then(() => this.$router.push({ name: "Home" }))
+        .catch((error) => (this.registerFormError = error.response.data.error));
+    },
+  },
+  computed: {
+    hasError() {
+      return !!this.registerFormError;
     },
   },
 };
