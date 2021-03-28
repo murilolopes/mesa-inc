@@ -4,7 +4,7 @@ import { User } from "./../services/user";
 export const state = {
   loggedUser: {},
   token: "",
-  error: {},
+  error: "",
 };
 
 export const mutations = {
@@ -13,6 +13,9 @@ export const mutations = {
   },
   SET_TOKEN(state, token) {
     state.token = token;
+  },
+  SET_ERROR(state, error) {
+    state.error = error;
   },
 };
 
@@ -24,27 +27,17 @@ export const getters = {
 
 export const actions = {
   async login({ commit, dispatch }, payload) {
-    return await Auth.login(payload)
-      .then(async (response) => {
-        commit("SET_TOKEN", response.data.token);
-        await dispatch("fetchUserData");
-        return response;
-      })
-      .catch(async (error) => {
-        commit("SET_ERROR", error.response.data);
-        return error;
-      });
+    return await Auth.login(payload).then(async (response) => {
+      commit("SET_TOKEN", response.data.token);
+      await dispatch("fetchUserData");
+      return response;
+    });
   },
 
   async fetchUserData({ commit }, user_id = 2) {
-    return await User.fetch(user_id)
-      .then((response) => {
-        commit("SET_USER", response.data.data);
-        return response;
-      })
-      .catch((error) => {
-        commit("SET_ERROR", error.response.data);
-        return error;
-      });
+    return await User.fetch(user_id).then((response) => {
+      commit("SET_USER", response.data.data);
+      return response;
+    });
   },
 };
