@@ -4,7 +4,6 @@ import { User } from "./../services/user";
 export const state = {
   loggedUser: {},
   token: "",
-  error: "",
 };
 
 export const mutations = {
@@ -13,9 +12,6 @@ export const mutations = {
   },
   SET_TOKEN(state, token) {
     state.token = token;
-  },
-  SET_ERROR(state, error) {
-    state.error = error;
   },
 };
 
