@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "Mesa",
     component: Home,
   },
   {
@@ -35,9 +35,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "Login" && !store.getters["auth/isAuthenticated"])
-    next({ name: "Login" });
-  else next();
+  if (to.name == "Mesa") return next();
+  if (!isAuthRoute(to) && !isAuthenticated()) return next({ name: "Login" });
+
+  return next();
 });
+
+const isAuthenticated = () => store.getters["auth/isAuthenticated"];
+const isAuthRoute = (to) => ["Login", "Register"].includes(to.name);
 
 export default router;

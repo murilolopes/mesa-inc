@@ -16,7 +16,11 @@ export const mutations = {
   },
 };
 
-export const getters = {};
+export const getters = {
+  isAuthenticated(state) {
+    return !!state.token;
+  },
+};
 
 export const actions = {
   async login({ commit, dispatch }, payload) {
