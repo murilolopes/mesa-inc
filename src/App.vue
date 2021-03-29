@@ -1,10 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Mesa</router-link> |
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
-      <router-link to="/home">Home(logged)</router-link>
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/profile">Profile</router-link>
     </div>
     <router-view />
   </div>
