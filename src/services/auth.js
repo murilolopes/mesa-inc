@@ -4,9 +4,10 @@ export class Auth {
     return AXIOS.post("https://reqres.in/api/login", { email, password });
   }
 
-  static register({ full_name, email, phone, role, password }) {
+  static register({ first_name, last_name, email, phone, role, password }) {
     return AXIOS.post("https://reqres.in/api/register", {
-      full_name,
+      first_name,
+      last_name,
       email,
       phone,
       role,

@@ -11,11 +11,20 @@
             <form id="profileForm" @submit.prevent="sendUpdateUser">
               <div class="form-group input-group">
                 <input
-                  name="full_name"
+                  name="first_name"
                   class="form-control"
-                  placeholder="Nome completo"
+                  placeholder="Nome"
                   type="text"
-                  v-model="profileForm.full_name"
+                  v-model="profileForm.first_name"
+                />
+              </div>
+              <div class="form-group input-group">
+                <input
+                  name="last_name"
+                  class="form-control"
+                  placeholder="Sobrenome"
+                  type="text"
+                  v-model="profileForm.last_name"
                 />
               </div>
               <div class="form-group input-group">
@@ -66,7 +75,8 @@ export default {
     return {
       profileFormError: "",
       profileForm: {
-        full_name: "",
+        first_name: "",
+        last_name: "",
         email: "",
         phone: "",
         role: "",
@@ -86,7 +96,6 @@ export default {
     },
     fillForm() {
       this.profileForm = Object.assign({}, this.$store.state.auth.loggedUser);
-      this.profileForm.full_name = `${this.profileForm.first_name} ${this.profileForm.last_name}`;
     },
   },
   computed: {

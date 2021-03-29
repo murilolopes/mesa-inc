@@ -12,11 +12,20 @@
             <form id="registerForm" @submit.prevent="sendRegistration">
               <div class="form-group input-group">
                 <input
-                  name="full_name"
+                  name="first_name"
                   class="form-control"
-                  placeholder="Nome completo"
+                  placeholder="Nome"
                   type="text"
-                  v-model="registerForm.full_name"
+                  v-model="registerForm.first_name"
+                />
+              </div>
+              <div class="form-group input-group">
+                <input
+                  name="last_name"
+                  class="form-control"
+                  placeholder="Sobrenome"
+                  type="text"
+                  v-model="registerForm.last_name"
                 />
               </div>
               <div class="form-group input-group">
@@ -86,7 +95,8 @@ export default {
     return {
       registerFormError: "",
       registerForm: {
-        full_name: "",
+        first_name: "",
+        last_name: "",
         email: "",
         phone: "",
         role: "",
