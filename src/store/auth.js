@@ -13,6 +13,9 @@ export const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
   },
+  CLEAR_TOKEN(state) {
+    state.token = "";
+  },
 };
 
 export const getters = {
@@ -52,5 +55,9 @@ export const actions = {
       commit("SET_USER", mockedUser);
       return response;
     });
+  },
+
+  async logout({ commit }) {
+    return await commit("CLEAR_TOKEN");
   },
 };

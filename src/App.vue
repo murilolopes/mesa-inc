@@ -5,11 +5,27 @@
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
       <router-link to="/home">Home</router-link> |
-      <router-link to="/profile">Profile</router-link>
+      <router-link to="/profile">Profile</router-link> |
+      <button @click.prevent="callLogout()" v-if="$store.state.auth.token">
+        Logout
+      </button>
     </div>
     <router-view />
   </div>
 </template>
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  name: "App",
+  methods: {
+    ...mapActions("auth", ["logout"]),
+    callLogout() {
+      this.logout().then(() => this.$router.push({ name: "Login" }));
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
