@@ -98,7 +98,6 @@ export default {
   methods: {
     ...mapActions("auth", ["register"]),
     sendRegistration() {
-      console.log("sending:", { ...this.registerForm });
       this.register(this.registerForm)
         .then(() => this.$router.push({ name: "Home" }))
         .catch((error) => (this.registerFormError = error.response.data.error));

@@ -40,7 +40,16 @@ export const actions = {
 
   async fetchUserData({ commit }, user_id = 2) {
     return await User.fetch(user_id).then((response) => {
-      commit("SET_USER", response.data.data);
+      const mockedUser = {
+        id: 2,
+        email: "janet.weaver@reqres.in",
+        first_name: "Janet",
+        last_name: "Weaver",
+        avatar: "https://reqres.in/img/faces/2-image.jpg",
+        role: "Designer",
+        phone: "82996698304",
+      };
+      commit("SET_USER", mockedUser);
       return response;
     });
   },

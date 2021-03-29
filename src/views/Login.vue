@@ -63,7 +63,7 @@ export default {
     return {
       loginFormError: "",
       loginForm: {
-        email: "eve.holt@reqres.inx",
+        email: "eve.holt@reqres.in",
         password: "cityslicka",
       },
     };
