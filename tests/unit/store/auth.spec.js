@@ -67,6 +67,8 @@ describe("In a Auth Store", () => {
         first_name: "Janet",
         last_name: "Weaver",
         avatar: "https://reqres.in/img/faces/2-image.jpg",
+        phone: "82996698304",
+        role: "Designer",
       };
 
       await store.dispatch("auth/fetchUserData");
@@ -116,7 +118,7 @@ describe("In a Auth Store", () => {
       );
     });
 
-    it.only("register action should call Auth.register service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
+    it("register action should call Auth.register service, commit SET_TOKEN and dispatch fetchUserData action", async () => {
       let mockedAuthModule = authModule;
       mockedAuthModule.mutations.SET_TOKEN = jest.fn();
       mockedAuthModule.actions.fetchUserData = jest.fn();
