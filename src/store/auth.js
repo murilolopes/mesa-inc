@@ -36,13 +36,13 @@ export const actions = {
   async register({ commit, dispatch }, payload) {
     return await Auth.register(payload).then(async (response) => {
       commit("SET_TOKEN", response.data.token);
-      await dispatch("fetchUserData");
+      await dispatch("fetchUserData", payload);
       return response;
     });
   },
 
-  async fetchUserData({ commit }, user_id = 2) {
-    return await User.fetch(user_id).then((response) => {
+  async fetchUserData({ commit }, payload) {
+    return await User.fetch(2).then((response) => {
       const mockedUser = {
         id: 2,
         email: "janet.weaver@reqres.in",
@@ -52,7 +52,7 @@ export const actions = {
         role: "Designer",
         phone: "82996698304",
       };
-      commit("SET_USER", mockedUser);
+      commit("SET_USER", { ...mockedUser, ...payload });
       return response;
     });
   },
