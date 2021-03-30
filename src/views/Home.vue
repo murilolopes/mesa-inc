@@ -1,6 +1,95 @@
 <template>
   <div>
-    <b-modal id="placeDetails">Hello From My Modal!</b-modal>
+    <b-modal id="placeDetails">
+      <h4>nome do lugar - (rating do lugar)</h4>
+      fotos do lugar
+      <b-carousel
+        id="carousel-1"
+        :interval="4000"
+        controls
+        indicators
+        background="#ababab"
+        img-width="1024"
+        img-height="480"
+        style="text-shadow: 1px 1px 2px #333"
+      >
+        <!-- Text slides with image -->
+        <b-carousel-slide
+          caption="First slide"
+          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+          img-src="https://picsum.photos/1024/480/?image=52"
+        ></b-carousel-slide>
+
+        <!-- Slides with custom text -->
+        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <h1>Hello world!</h1>
+        </b-carousel-slide>
+
+        <!-- Slides with image only -->
+        <b-carousel-slide
+          img-src="https://picsum.photos/1024/480/?image=58"
+        ></b-carousel-slide>
+
+        <!-- Slides with img slot -->
+        <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
+        <b-carousel-slide>
+          <template #img>
+            <img
+              class="d-block img-fluid w-100"
+              width="1024"
+              height="480"
+              src="https://picsum.photos/1024/480/?image=55"
+              alt="image slot"
+            />
+          </template>
+        </b-carousel-slide>
+
+        <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            eros felis, tincidunt a tincidunt eget, convallis vel est. Ut
+            pellentesque ut lacus vel interdum.
+          </p>
+        </b-carousel-slide>
+      </b-carousel>
+      estrelinhas para dar uma nota
+      <b-form-rating
+        id="rating-sm-no-border"
+        v-model="rating"
+        no-border
+        size="sm"
+      ></b-form-rating>
+      botoes para cometar e favoritar
+      <div>
+        <b-button-group>
+          <b-button @click.prevent="toggleCommentInput()">comentar</b-button>
+          <b-button>favoritar</b-button>
+        </b-button-group>
+
+        <div v-show="commenting">
+          <b-form-textarea
+            id="textarea"
+            v-model="new_comment"
+            placeholder="Enter something..."
+            rows="3"
+            max-rows="6"
+          ></b-form-textarea>
+
+          <b-button @click.prevent="toggleCommentInput()">cancelar</b-button>
+          <b-button @click.prevent="addNewComment()">save</b-button>
+        </div>
+      </div>
+      comentarios das outras pessoas
+      <b-list-group>
+        <b-list-group-item
+          button
+          :key="place.place_id"
+          v-for="place in results"
+          >{{ place.name }}</b-list-group-item
+        >
+      </b-list-group>
+    </b-modal>
 
     <div class="container">
       <h1>
@@ -33,12 +122,17 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader";
+import { mapActions } from "vuex";
 
 export default {
   name: "Home",
   data() {
     return {
+      rating: 3,
+      new_comment: "",
+      commenting: false,
       listOrMap: true,
+      selectedPlace: {},
       map: {},
       loader: {},
       currentPossition: {},
@@ -64,6 +158,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("place", ["fetchPlaceDetails"]),
     buscar() {
       // `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.currentPossition.latitude},${this.currentPossition.longitude}&radius=1500&&keyword=${this.search}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
       this.prepareResults([
@@ -251,7 +346,32 @@ export default {
         `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,formatted_phone_number&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
       );
 
-      this.$bvModal.show("placeDetails");
+      this.fetchPlaceDetails(place_id).then((response) => {
+        this.selectedPlace = response;
+        this.$bvModal.show("placeDetails");
+      });
+    },
+    toggleCommentInput() {
+      this.commenting = !this.commenting;
+      this.new_comment = "";
+    },
+    addNewComment() {
+      //TODO add o this.new_comment no array do selected place e depois chamar toggleCommentInput
+    },
+    prepareReviews(place_details) {
+      return place_details.reviews.map((review) => {
+        return {
+          author_name: review.author_name,
+          relative_time_description: review.relative_time_description,
+          text: review.text,
+        };
+      });
+    },
+    preparePhotos(place_details) {
+      return place_details.photos.map(
+        (review) =>
+          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${review.width}&maxheight=${review.height}&photoreference=${review.photo_reference}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
+      );
     },
   },
 };
