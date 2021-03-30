@@ -1,32 +1,32 @@
 <template>
   <div>
+    <b-modal id="placeDetails">Hello From My Modal!</b-modal>
+
     <div class="container">
       <h1>
         Oi Mesa, espero que esse teste consiga algo sobre minhas habilidades com
         o framework
       </h1>
 
-      <b-input-group size="sm">
-        <b-form-input v-model="search"></b-form-input>
-      </b-input-group>
       <button @click.prevent="buscar">buscar</button>
     </div>
 
     <div id="asd">
+      <b-form-checkbox v-model="listOrMap" name="check-button" switch>
+        Switch Checkbox <b>(Checked: {{ listOrMap }})</b>
+      </b-form-checkbox>
       <div v-show="listOrMap">
         <b-list-group>
           <b-list-group-item
             button
             :key="place.place_id"
             v-for="place in results"
+            @click.prevent="openPlaceDetails(place.place_id)"
             >{{ place.name }}</b-list-group-item
           >
         </b-list-group>
       </div>
       <div id="map" v-show="!listOrMap"></div>
-      <b-form-checkbox v-model="listOrMap" name="check-button" switch>
-        Switch Checkbox <b>(Checked: {{ listOrMap }})</b>
-      </b-form-checkbox>
     </div>
   </div>
 </template>
@@ -49,17 +49,15 @@ export default {
   mounted() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.showPosition);
-
       this.loader = new Loader({
         apiKey: "AIzaSyB-PRLv1O1Qlj-_q2iVu_kxDIH1pa5ypwo",
         version: "weekly",
         libraries: ["places"],
       });
-
       this.loader.load().then(() => {
         this.map = new window.google.maps.Map(document.getElementById("map"), {
-          center: { lat: -9.6427874, lng: -35.73527 },
-          zoom: 14,
+          center: this.currentPossition,
+          zoom: 15,
           mapTypeId: "roadmap",
         });
       });
@@ -246,6 +244,14 @@ export default {
           position,
         };
       });
+    },
+    openPlaceDetails(place_id) {
+      console.log(place_id);
+      console.log(
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,formatted_phone_number&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
+      );
+
+      this.$bvModal.show("placeDetails");
     },
   },
 };
