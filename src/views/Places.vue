@@ -12,7 +12,7 @@
             button
             :key="place.place_id"
             v-for="place in results"
-            @click.prevent="openPlaceDetails(place.place_id)"
+            @click.prevent="openPlaceDetailsModal(place.place_id)"
             >{{ place.name }}</b-list-group-item
           >
         </b-list-group>
@@ -243,7 +243,7 @@ export default {
         };
       });
     },
-    openPlaceDetails(place_id) {
+    openPlaceDetailsModal(place_id) {
       console.log(place_id);
       console.log(
         `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&fields=name,rating,formatted_phone_number&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
