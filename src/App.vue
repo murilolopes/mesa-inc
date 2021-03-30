@@ -6,7 +6,10 @@
       <router-link to="/home">Home</router-link> |
       <router-link to="/profile">Profile</router-link> |
     </div>
-    <router-view />
+
+    <div class="container">
+      <router-view />
+    </div>
   </div>
 </template>
 <script>
