@@ -348,6 +348,12 @@ export default {
 
       this.fetchPlaceDetails(place_id).then((response) => {
         this.selectedPlace = response;
+        this.selectedPlace.photos = this.preparePhotos(
+          this.selectedPlace.photos
+        );
+        this.selectedPlace.reviews = this.prepareReviews(
+          this.selectedPlace.reviews
+        );
         this.$bvModal.show("placeDetails");
       });
     },
@@ -358,8 +364,8 @@ export default {
     addNewComment() {
       //TODO add o this.new_comment no array do selected place e depois chamar toggleCommentInput
     },
-    prepareReviews(place_details) {
-      return place_details.reviews.map((review) => {
+    prepareReviews(reviews) {
+      return reviews.map((review) => {
         return {
           author_name: review.author_name,
           relative_time_description: review.relative_time_description,
@@ -367,8 +373,8 @@ export default {
         };
       });
     },
-    preparePhotos(place_details) {
-      return place_details.photos.map(
+    preparePhotos(photos) {
+      return photos.map(
         (review) =>
           `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${review.width}&maxheight=${review.height}&photoreference=${review.photo_reference}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
       );
