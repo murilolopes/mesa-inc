@@ -72,7 +72,7 @@ export default {
     ...mapActions("auth", ["login"]),
     async sendLogin() {
       await this.login({ ...this.loginForm })
-        .then(() => this.$router.push({ name: "Home" }))
+        .then(() => this.$router.push({ name: "Places" }))
         .catch((error) => (this.loginFormError = error.response.data.error));
     },
   },
