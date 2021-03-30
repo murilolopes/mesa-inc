@@ -1,68 +1,29 @@
 <template>
   <div>
     <b-modal id="placeDetails">
-      <h4>nome do lugar - (rating do lugar)</h4>
-      fotos do lugar
+      <h4>{{ selectedPlace.name }} - ({{ selectedPlace.rating }})</h4>
       <b-carousel
         id="carousel-1"
-        :interval="4000"
-        controls
-        indicators
+        :interval="3000"
         background="#ababab"
         img-width="1024"
         img-height="480"
         style="text-shadow: 1px 1px 2px #333"
       >
-        <!-- Text slides with image -->
         <b-carousel-slide
-          caption="First slide"
-          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-          img-src="https://picsum.photos/1024/480/?image=52"
+          v-for="(photo, photoIndex) in selectedPlace.photos"
+          :key="photoIndex"
+          :img-src="photo"
         ></b-carousel-slide>
-
-        <!-- Slides with custom text -->
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-          <h1>Hello world!</h1>
-        </b-carousel-slide>
-
-        <!-- Slides with image only -->
-        <b-carousel-slide
-          img-src="https://picsum.photos/1024/480/?image=58"
-        ></b-carousel-slide>
-
-        <!-- Slides with img slot -->
-        <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-        <b-carousel-slide>
-          <template #img>
-            <img
-              class="d-block img-fluid w-100"
-              width="1024"
-              height="480"
-              src="https://picsum.photos/1024/480/?image=55"
-              alt="image slot"
-            />
-          </template>
-        </b-carousel-slide>
-
-        <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            eros felis, tincidunt a tincidunt eget, convallis vel est. Ut
-            pellentesque ut lacus vel interdum.
-          </p>
-        </b-carousel-slide>
       </b-carousel>
-      estrelinhas para dar uma nota
       <b-form-rating
         id="rating-sm-no-border"
         v-model="rating"
         no-border
         size="sm"
       ></b-form-rating>
-      botoes para cometar e favoritar
       <div>
-        <b-button-group>
+        <b-button-group style="width: 100%">
           <b-button @click.prevent="toggleCommentInput()">comentar</b-button>
           <b-button>favoritar</b-button>
         </b-button-group>
@@ -80,14 +41,21 @@
           <b-button @click.prevent="addNewComment()">save</b-button>
         </div>
       </div>
-      comentarios das outras pessoas
       <b-list-group>
         <b-list-group-item
-          button
-          :key="place.place_id"
-          v-for="place in results"
-          >{{ place.name }}</b-list-group-item
+          class="flex-column align-items-start"
+          v-for="(review, reviewIndex) in selectedPlace.reviews"
+          :key="reviewIndex"
         >
+          <div class="d-flex w-100 justify-content-between">
+            <h6 class="mb-1">{{ review.author_name }}</h6>
+            <small>{{ review.relative_time_description }}</small>
+          </div>
+
+          <p class="mb-1">
+            {{ review.text }}
+          </p>
+        </b-list-group-item>
       </b-list-group>
     </b-modal>
 
@@ -376,7 +344,7 @@ export default {
     preparePhotos(photos) {
       return photos.map(
         (review) =>
-          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${review.width}&maxheight=${review.height}&photoreference=${review.photo_reference}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
+          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=${review.photo_reference}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
       );
     },
   },
