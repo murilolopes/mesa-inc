@@ -24,7 +24,10 @@
       <div>
         <b-button-group style="width: 100%">
           <b-button @click.prevent="toggleReviewInput()">comentar</b-button>
-          <b-button>favoritar</b-button>
+          <b-button @click.prevent="sendBookmark()">
+            <b-icon-heart v-if="selectedPlace.bookmark"> </b-icon-heart>
+            <b-icon-heart-fill v-else variant="danger"></b-icon-heart-fill>
+          </b-button>
         </b-button-group>
 
         <div v-show="reviewing">
@@ -74,7 +77,12 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    ...mapActions("place", ["clearSelectedPlace", "addReview", "addRating"]),
+    ...mapActions("place", [
+      "clearSelectedPlace",
+      "addReview",
+      "addRating",
+      "addBookmark",
+    ]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
     },
@@ -95,6 +103,9 @@ export default {
     },
     sendNewRating(rating) {
       this.addRating({ place_id: this.selectedPlace.place_id, rating });
+    },
+    sendBookmark() {
+      this.addBookmark({ place_id: this.selectedPlace.place_id });
     },
   },
   computed: {

@@ -9,6 +9,7 @@ export const mutations = {
   SET_SELECTED_PLACE(state, selectedPlace) {
     selectedPlace.photos = treatPhotos(selectedPlace.photos);
     selectedPlace.reviews = treatReviews(selectedPlace.reviews);
+    selectedPlace.bookmark = false;
     state.selectedPlace = selectedPlace;
   },
   CLEAR_SELECTED_PLACE(state) {
@@ -19,6 +20,9 @@ export const mutations = {
   },
   PUSH_RATING(state, rating) {
     state.selectedPlace.rating = rating;
+  },
+  PUSH_BOOKMARK(state) {
+    state.selectedPlace.bookmark = !state.selectedPlace.bookmark;
   },
 };
 
@@ -41,6 +45,11 @@ export const actions = {
   addRating({ commit }, { place_id, rating }) {
     return Place.rating(place_id, rating).then((response) => {
       commit("PUSH_RATING", response.rating);
+    });
+  },
+  addBookmark({ commit }, place_id) {
+    return Place.bookmark(place_id).then(() => {
+      commit("PUSH_BOOKMARK");
     });
   },
 };

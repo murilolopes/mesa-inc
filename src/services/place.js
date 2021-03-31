@@ -185,4 +185,10 @@ export class Place {
       resolve({ place_id, rating });
     });
   }
+
+  static bookmark(place_id) {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  }
 }
