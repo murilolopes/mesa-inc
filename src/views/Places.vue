@@ -49,7 +49,7 @@ export default {
 
       this.loader.load().then(() => {
         this.map = new window.google.maps.Map(document.getElementById("map"), {
-          center: this.currentPossition,
+          center: { ...this.currentPossition },
           zoom: 15,
           mapTypeId: "roadmap",
         });
