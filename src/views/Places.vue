@@ -253,10 +253,6 @@ export default {
         this.$bvModal.show("placeDetails");
       });
     },
-    toggleCommentInput() {
-      this.commenting = !this.commenting;
-      this.new_comment = "";
-    },
   },
 };
 </script>

@@ -22,27 +22,27 @@
       ></b-form-rating>
       <div>
         <b-button-group style="width: 100%">
-          <b-button @click.prevent="toggleCommentInput()">comentar</b-button>
+          <b-button @click.prevent="toggleReviewInput()">comentar</b-button>
           <b-button>favoritar</b-button>
         </b-button-group>
 
-        <div v-show="commenting">
+        <div v-show="reviewing">
           <b-form-textarea
             id="textarea"
-            v-model="new_comment"
+            v-model="new_review"
             placeholder="Enter something..."
             rows="3"
             max-rows="6"
           ></b-form-textarea>
 
-          <b-button @click.prevent="toggleCommentInput()">cancelar</b-button>
-          <b-button @click.prevent="addNewComment()">save</b-button>
+          <b-button @click.prevent="toggleReviewInput()">cancelar</b-button>
+          <b-button @click.prevent="sendReview()">save</b-button>
         </div>
       </div>
       <b-list-group>
         <b-list-group-item
           class="flex-column align-items-start"
-          v-for="(review, reviewIndex) in selectedPlace.reviews"
+          v-for="(review, reviewIndex) in orderedReviews"
           :key="reviewIndex"
         >
           <div class="d-flex w-100 justify-content-between">
@@ -67,20 +67,39 @@ export default {
   data() {
     return {
       rating: 3,
-      new_comment: "",
-      commenting: false,
+      new_review: "",
+      reviewing: false,
     };
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    ...mapActions("place", ["clearSelectedPlace"]),
+    ...mapActions("place", ["clearSelectedPlace", "addReview"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
+    },
+    toggleReviewInput() {
+      this.reviewing = !this.reviewing;
+      this.new_review = "";
+    },
+    sendReview() {
+      const payload = {
+        place_id: this.selectedPlace.place_id,
+        review: {
+          author_name: this.$store.state.auth.loggedUser.first_name,
+          relative_time_description: "Segundos atrás",
+          text: this.new_review,
+        },
+      };
+      this.addReview(payload).then(() => this.toggleReviewInput());
     },
   },
   computed: {
     selectedPlace() {
       return this.$store.state.place.selectedPlace;
+    },
+    orderedReviews() {
+      const reviews = Object.assign([], this.selectedPlace.reviews);
+      return reviews.reverse();
     },
   },
 };

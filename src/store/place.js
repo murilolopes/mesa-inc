@@ -14,6 +14,9 @@ export const mutations = {
   CLEAR_SELECTED_PLACE(state) {
     state.selectedPlace = {};
   },
+  PUSH_REVIEW(state, review) {
+    state.selectedPlace.reviews.push(review);
+  },
 };
 
 export const getters = {};
@@ -26,5 +29,10 @@ export const actions = {
   },
   clearSelectedPlace({ commit }) {
     commit("CLEAR_SELECTED_PLACE");
+  },
+  addReview({ commit }, { place_id, review }) {
+    return Place.review(place_id, review).then((response) => {
+      commit("PUSH_REVIEW", response);
+    });
   },
 };
