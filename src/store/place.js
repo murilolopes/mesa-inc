@@ -1,4 +1,3 @@
-/* eslint-disable no-empty-pattern */
 import { Place } from "../services/place";
 import { treatPhotos, treatReviews } from "./../utils/array";
 
@@ -12,6 +11,9 @@ export const mutations = {
     selectedPlace.reviews = treatReviews(selectedPlace.reviews);
     state.selectedPlace = selectedPlace;
   },
+  CLEAR_SELECTED_PLACE(state) {
+    state.selectedPlace = {};
+  },
 };
 
 export const getters = {};
@@ -21,5 +23,8 @@ export const actions = {
     return Place.details(place_id).then((response) => {
       commit("SET_SELECTED_PLACE", response);
     });
+  },
+  clearSelectedPlace({ commit }) {
+    commit("CLEAR_SELECTED_PLACE");
   },
 };

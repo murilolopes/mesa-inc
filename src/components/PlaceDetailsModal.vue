@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal id="placeDetails">
+    <b-modal id="placeDetails" @hide="clearSelectedPlace()">
       <h4>{{ selectedPlace.name }} - ({{ selectedPlace.rating }})</h4>
       <b-carousel
         id="carousel-1"
@@ -61,6 +61,7 @@
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
   name: "NavBar",
   data() {
@@ -72,6 +73,7 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["logout"]),
+    ...mapActions("place", ["clearSelectedPlace"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
     },
