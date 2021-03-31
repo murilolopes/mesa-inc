@@ -19,6 +19,7 @@
         v-model="rating"
         no-border
         size="sm"
+        @change="sendNewRating"
       ></b-form-rating>
       <div>
         <b-button-group style="width: 100%">
@@ -66,14 +67,14 @@ export default {
   name: "NavBar",
   data() {
     return {
-      rating: 3,
+      rating: 0,
       new_review: "",
       reviewing: false,
     };
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    ...mapActions("place", ["clearSelectedPlace", "addReview"]),
+    ...mapActions("place", ["clearSelectedPlace", "addReview", "addRating"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
     },
@@ -92,6 +93,9 @@ export default {
       };
       this.addReview(payload).then(() => this.toggleReviewInput());
     },
+    sendNewRating(rating) {
+      this.addRating({ place_id: this.selectedPlace.place_id, rating });
+    },
   },
   computed: {
     selectedPlace() {
@@ -100,6 +104,11 @@ export default {
     orderedReviews() {
       const reviews = Object.assign([], this.selectedPlace.reviews);
       return reviews.reverse();
+    },
+  },
+  watch: {
+    "selectedPlace.rating"(newValue) {
+      if (newValue) this.rating = newValue;
     },
   },
 };

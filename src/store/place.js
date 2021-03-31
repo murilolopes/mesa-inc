@@ -17,6 +17,9 @@ export const mutations = {
   PUSH_REVIEW(state, review) {
     state.selectedPlace.reviews.push(review);
   },
+  PUSH_RATING(state, rating) {
+    state.selectedPlace.rating = rating;
+  },
 };
 
 export const getters = {};
@@ -33,6 +36,11 @@ export const actions = {
   addReview({ commit }, { place_id, review }) {
     return Place.review(place_id, review).then((response) => {
       commit("PUSH_REVIEW", response);
+    });
+  },
+  addRating({ commit }, { place_id, rating }) {
+    return Place.rating(place_id, rating).then((response) => {
+      commit("PUSH_RATING", response.rating);
     });
   },
 };

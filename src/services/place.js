@@ -168,6 +168,7 @@ export class Place {
       });
     });
   }
+
   static review(place_id, review) {
     return new Promise((resolve) => {
       resolve({
@@ -176,6 +177,12 @@ export class Place {
         relative_time_description: "Segundos atrás",
         text: review.text,
       });
+    });
+  }
+
+  static rating(place_id, rating) {
+    return new Promise((resolve) => {
+      resolve({ place_id, rating });
     });
   }
 }
