@@ -6,8 +6,6 @@
         id="carousel-1"
         :interval="3000"
         background="#ababab"
-        img-width="1024"
-        img-height="480"
         style="text-shadow: 1px 1px 2px #333"
       >
         <b-carousel-slide
@@ -70,13 +68,17 @@ export default {
       rating: 3,
       new_comment: "",
       commenting: false,
-      selectedPlace: {},
     };
   },
   methods: {
     ...mapActions("auth", ["logout"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
+    },
+  },
+  computed: {
+    selectedPlace() {
+      return this.$store.state.place.selectedPlace;
     },
   },
 };
