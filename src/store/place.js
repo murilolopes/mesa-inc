@@ -59,6 +59,7 @@ export const actions = {
   nearbyPlaces({ commit }, { lat, lng, radius, map }) {
     return Place.nearby({ lat, lng, radius, map }).then((response) => {
       commit("PUSH_PLACES", response);
+      return response;
     });
   },
 };

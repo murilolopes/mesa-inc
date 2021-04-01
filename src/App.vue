@@ -14,5 +14,6 @@ import PlaceDetailsModal from "./components/PlaceDetailsModal.vue";
 export default {
   name: "App",
   components: { NavBar, PlaceDetailsModal },
+  mounted() {},
 };
 </script>

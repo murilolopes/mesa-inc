@@ -203,7 +203,23 @@ export class Place {
     return new Promise((resolve) => {
       const service = new window.google.maps.places.PlacesService(map);
       service.nearbySearch(requestParams, (results) => {
-        resolve(results);
+        resolve(
+          results.map((place) => {
+            const position = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            };
+            return {
+              name: place.name,
+              // open: place.opening_hours.open_now,
+              rating: place.rating,
+              place_id: place.place_id,
+              user_ratings_total: place.user_ratings_total,
+              vicinity: place.vicinity,
+              position,
+            };
+          })
+        );
       });
     });
   }
