@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import axios from "axios";
 import { resolve } from "core-js/features/promise";
 
 export class Place {
@@ -189,6 +190,21 @@ export class Place {
   static bookmark(place_id) {
     return new Promise((resolve) => {
       resolve();
+    });
+  }
+
+  static async nearby({ lat, lng, radius, map }) {
+    const requestParams = {
+      location: { lat, lng },
+      radius,
+      type: "restaurant",
+    };
+
+    return new Promise((resolve) => {
+      const service = new window.google.maps.places.PlacesService(map);
+      service.nearbySearch(requestParams, (results) => {
+        resolve(results);
+      });
     });
   }
 }

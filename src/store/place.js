@@ -3,6 +3,7 @@ import { treatPhotos, treatReviews } from "./../utils/array";
 
 export const state = {
   selectedPlace: {},
+  places: [],
 };
 
 export const mutations = {
@@ -23,6 +24,9 @@ export const mutations = {
   },
   PUSH_BOOKMARK(state) {
     state.selectedPlace.bookmark = !state.selectedPlace.bookmark;
+  },
+  PUSH_PLACES(state, places) {
+    state.places = places;
   },
 };
 
@@ -50,6 +54,11 @@ export const actions = {
   addBookmark({ commit }, place_id) {
     return Place.bookmark(place_id).then(() => {
       commit("PUSH_BOOKMARK");
+    });
+  },
+  nearbyPlaces({ commit }, { lat, lng, radius, map }) {
+    return Place.nearby({ lat, lng, radius, map }).then((response) => {
+      commit("PUSH_PLACES", response);
     });
   },
 };
