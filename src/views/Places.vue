@@ -1,42 +1,35 @@
 <template>
   <div>
-    <div class="row flex-column align-items-center">
-      <div class="">
-        <b-form-checkbox v-model="listOrMap" name="check-button" switch>
-          <b>Modo {{ listOrMap ? "lista" : "mapa" }}</b>
-        </b-form-checkbox>
+    <div class="justify-content-center">
+      <div id="listOrMap">
+        <div v-show="listMode">
+          <b-list-group>
+            <b-list-group-item
+              button
+              :key="place.place_id"
+              v-for="place in $store.state.place.places"
+              @click.prevent="openPlaceDetailsModal(place.place_id)"
+              >{{ place.name }}</b-list-group-item
+            >
+          </b-list-group>
+        </div>
+        <div id="map" v-show="mapMode"></div>
       </div>
-      <div v-show="listOrMap">
-        <b-list-group>
-          <b-list-group-item
-            button
-            :key="place.place_id"
-            v-for="place in $store.state.place.places"
-            @click.prevent="openPlaceDetailsModal(place.place_id)"
-            >{{ place.name }}</b-list-group-item
-          >
-        </b-list-group>
-      </div>
-      <div id="map" v-show="!listOrMap"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Places",
   data() {
     return {
-      listOrMap: true,
       map: {},
       map_loaded: false,
       loader: {},
-      service: {},
       currentPossition: {},
-      search: "",
-      results: [],
     };
   },
   mounted() {
@@ -46,6 +39,7 @@ export default {
   },
   methods: {
     ...mapActions("place", ["fetchPlaceDetails", "nearbyPlaces"]),
+    ...mapActions("app", ["setPlacesViewMode"]),
     savePosition(position) {
       this.currentPossition = {
         lat: position.coords.latitude,
@@ -77,6 +71,9 @@ export default {
         map: this.map,
       });
     },
+  },
+  computed: {
+    ...mapGetters("app", ["listMode", "mapMode"]),
   },
   watch: {
     currentPossition(newValue) {

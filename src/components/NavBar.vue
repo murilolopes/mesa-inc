@@ -2,6 +2,11 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand to="/">NavBar</b-navbar-brand>
+      <b-navbar-brand>
+        <b-form-checkbox v-model="switchListOrMap" switch>
+          <b>{{ switchLabel }}</b>
+        </b-form-checkbox>
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -28,14 +33,31 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NavBar",
-  props: {},
+  data() {
+    return {
+      switchListOrMap: false,
+    };
+  },
   methods: {
     ...mapActions("auth", ["logout"]),
+    ...mapActions("app", ["setPlacesViewMode"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
+    },
+  },
+  computed: {
+    ...mapGetters("app", ["listMode"]),
+    switchLabel() {
+      let modo = this.listMode ? "lista" : "mapa";
+      return `Modo ${modo}`;
+    },
+  },
+  watch: {
+    switchListOrMap(newValue) {
+      this.setPlacesViewMode(!newValue ? "list" : "map");
     },
   },
 };
