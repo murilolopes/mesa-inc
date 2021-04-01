@@ -1,8 +1,5 @@
 export const treatPhotos = (photos) => {
-  return photos.map(
-    (review) =>
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=${review.photo_reference}&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`
-  );
+  return photos.map((photo) => photo.getUrl({ maxWidth: 350, maxHeight: 350 }));
 };
 export const treatReviews = (reviews) => {
   return reviews.map((review) => {

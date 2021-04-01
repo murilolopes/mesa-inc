@@ -33,7 +33,7 @@ export const mutations = {
 export const getters = {};
 
 export const actions = {
-  fetchPlaceDetails({ commit }, { place_id }) {
+  fetchPlaceDetails({ commit }, place_id) {
     return Place.details(place_id).then((response) => {
       commit("SET_SELECTED_PLACE", response);
     });

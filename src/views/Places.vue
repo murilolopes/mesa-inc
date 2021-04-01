@@ -64,6 +64,10 @@ export default {
           zoom: 15,
           mapTypeId: "roadmap",
         });
+        window.placesService = new window.google.maps.places.PlacesService(
+          this.map
+        );
+
         this.map_loaded = true;
       });
     },
