@@ -1,9 +1,18 @@
 <template>
   <div>
-    <b-modal id="placeDetails" @hide="clearSelectedPlace()">
-      <h4>{{ selectedPlace.name }} - ({{ selectedPlace.rating }})</h4>
+    <b-modal
+      id="placeDetails"
+      size="lg"
+      :title="placeTitle"
+      @hide="clearSelectedPlace()"
+      cancel-disabled
+      button-size="sm"
+      ok-only
+    >
       <b-carousel
         id="carousel-1"
+        indicators
+        fade
         :interval="3000"
         background="#ababab"
         style="text-shadow: 1px 1px 2px #333"
@@ -14,33 +23,45 @@
           :img-src="photo"
         ></b-carousel-slide>
       </b-carousel>
-      <b-form-rating
-        id="rating-sm-no-border"
-        v-model="rating"
-        no-border
-        size="sm"
-        @change="sendNewRating"
-      ></b-form-rating>
+      <div class="rating">
+        <b-form-rating
+          id="rating-sm-no-border"
+          v-model="rating"
+          no-border
+          size="sm"
+          @change="sendNewRating"
+        />
+      </div>
       <div>
-        <b-button-group style="width: 100%">
-          <b-button @click.prevent="toggleReviewInput()">comentar</b-button>
-          <b-button @click.prevent="sendBookmark()">
+        <b-button-group class="w-100 mb-4">
+          <b-button
+            @click.prevent="toggleReviewInput()"
+            variant="outline-success"
+            >Comentar</b-button
+          >
+          <b-button @click.prevent="sendBookmark()" variant="outline-danger">
             <b-icon-heart v-if="selectedPlace.bookmark"> </b-icon-heart>
             <b-icon-heart-fill v-else variant="danger"></b-icon-heart-fill>
           </b-button>
         </b-button-group>
 
-        <div v-show="reviewing">
+        <div v-show="reviewing" class="mb-4">
           <b-form-textarea
             id="textarea"
             v-model="new_review"
-            placeholder="Enter something..."
+            placeholder="Escreva aqui seu comentário sobre o local..."
             rows="3"
-            max-rows="6"
           ></b-form-textarea>
-
-          <b-button @click.prevent="toggleReviewInput()">cancelar</b-button>
-          <b-button @click.prevent="sendReview()">save</b-button>
+          <b-button-group class="w-100 mt-3">
+            <b-button
+              @click.prevent="toggleReviewInput()"
+              variant="outline-danger"
+              >Cancelar</b-button
+            >
+            <b-button @click.prevent="sendReview()" variant="outline-success"
+              >Enviar</b-button
+            >
+          </b-button-group>
         </div>
       </div>
       <b-list-group>
@@ -116,6 +137,9 @@ export default {
       const reviews = Object.assign([], this.selectedPlace.reviews);
       return reviews.reverse();
     },
+    placeTitle() {
+      return `${this.selectedPlace.name} - (${this.selectedPlace.rating})`;
+    },
   },
   watch: {
     "selectedPlace.rating"(newValue) {
@@ -125,4 +149,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.rating {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+</style>
