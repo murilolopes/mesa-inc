@@ -169,4 +169,8 @@ export default {
 .img-fluid {
   height: 450px;
 }
+
+#map {
+  position: fixed !important;
+}
 </style>
