@@ -11,17 +11,15 @@
     >
       <b-carousel
         id="carousel-1"
-        indicators
-        fade
         :interval="3000"
         background="#ababab"
-        style="text-shadow: 1px 1px 2px #333"
+        indicators
       >
         <b-carousel-slide
           v-for="(photo, photoIndex) in selectedPlace.photos"
           :key="photoIndex"
           :img-src="photo"
-        ></b-carousel-slide>
+        />
       </b-carousel>
       <div class="rating">
         <b-form-rating
@@ -128,6 +126,9 @@ export default {
     sendBookmark() {
       this.addBookmark({ place_id: this.selectedPlace.place_id });
     },
+    asd(photo) {
+      return `background: url(${photo});`;
+    },
   },
   computed: {
     selectedPlace() {
@@ -153,5 +154,19 @@ export default {
 .rating {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.carousel-item {
+  .w-100 {
+    width: auto !important;
+  }
+
+  img {
+    margin: auto;
+  }
+}
+
+.img-fluid {
+  height: 450px;
 }
 </style>

@@ -1,5 +1,5 @@
 export const treatPhotos = (photos) => {
-  return photos.map((photo) => photo.getUrl({ maxWidth: 350, maxHeight: 350 }));
+  return photos.map((photo) => photo.getUrl({ maxWidth: 450, maxHeight: 450 }));
 };
 export const treatReviews = (reviews) => {
   return reviews.map((review) => {
