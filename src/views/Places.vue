@@ -3,15 +3,17 @@
     <div class="justify-content-center">
       <div id="listOrMap">
         <div v-show="listMode">
-          <b-list-group>
-            <b-list-group-item
-              button
-              :key="place.place_id"
-              v-for="place in $store.state.place.places"
-              @click.prevent="openPlaceDetailsModal(place.place_id)"
-              >{{ place.name }}</b-list-group-item
-            >
-          </b-list-group>
+          <div class="container mt-4 mb-4">
+            <b-list-group>
+              <b-list-group-item
+                button
+                :key="place.place_id"
+                v-for="place in $store.state.place.places"
+                @click.prevent="openPlaceDetailsModal(place.place_id)"
+                >{{ place.name }}</b-list-group-item
+              >
+            </b-list-group>
+          </div>
         </div>
         <div id="map" v-show="mapMode"></div>
       </div>
