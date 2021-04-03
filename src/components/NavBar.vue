@@ -1,12 +1,28 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="primary">
-      <b-navbar-brand to="/">NavBar</b-navbar-brand>
-      <b-nav-item>
-        <b-form-checkbox v-model="switchListOrMap" switch>
-          <b>{{ switchLabel }}</b>
-        </b-form-checkbox>
-      </b-nav-item>
+    <b-navbar
+      toggleable="lg"
+      type="dark"
+      variant="primary"
+      class="justify-content-xl-between mesa-blue"
+    >
+      <b-navbar-brand to="/">
+        <img
+          class="brand-size"
+          src="img/mesa-inc.svg"
+          alt="mesa-inc-front-end-test"
+        />
+      </b-navbar-brand>
+      <b-navbar-nav justified="true">
+        <b-nav-item
+          @click.prevent="toggleSwitch"
+          v-if="$store.state.auth.token"
+        >
+          <b-form-checkbox v-model="switchListOrMap" switch>
+            <b>{{ switchLabel }}</b>
+          </b-form-checkbox>
+        </b-nav-item>
+      </b-navbar-nav>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -52,6 +68,9 @@ export default {
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
     },
+    toggleSwitch() {
+      this.switchListOrMap = !this.switchListOrMap;
+    },
   },
   computed: {
     ...mapGetters("app", ["listMode"]),
@@ -68,4 +87,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.brand-size {
+  height: 36px;
+}
+
+.mesa-blue {
+  background-color: #121839 !important;
+}
+</style>
