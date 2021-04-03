@@ -2,11 +2,11 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand to="/">NavBar</b-navbar-brand>
-      <b-navbar-brand>
+      <b-nav-item>
         <b-form-checkbox v-model="switchListOrMap" switch>
           <b>{{ switchLabel }}</b>
         </b-form-checkbox>
-      </b-navbar-brand>
+      </b-nav-item>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -16,16 +16,21 @@
             <b-nav-item to="/login">Entrar</b-nav-item>
             <b-nav-item to="/register">Cadastrar</b-nav-item>
           </template>
-          <b-nav-item-dropdown right v-else>
-            <template #button-content>
-              <em>User</em>
-            </template>
-            <b-dropdown-item to="/profile">Perfil</b-dropdown-item>
-            <b-dropdown-item to="/favorites">Favoritos</b-dropdown-item>
-            <b-dropdown-item @click.prevent="callLogout()"
-              >Sair</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
+
+          <template v-else>
+            <b-nav-item to="/places">
+              <b-icon icon="map"></b-icon> Mapa
+            </b-nav-item>
+            <b-nav-item to="/profile">
+              <b-icon icon="person-circle"></b-icon> Perfil
+            </b-nav-item>
+            <b-nav-item to="/bookmarks">
+              <b-icon icon="bookmark-heart-fill"></b-icon> Favoritos
+            </b-nav-item>
+            <b-nav-item @click.prevent="callLogout()">
+              <b-icon icon="x"></b-icon> Sair
+            </b-nav-item>
+          </template>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
