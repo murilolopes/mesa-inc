@@ -13,7 +13,7 @@
           alt="mesa-inc-front-end-test"
         />
       </b-navbar-brand>
-      <b-navbar-nav justified="true">
+      <b-navbar-nav>
         <b-nav-item
           @click.prevent="toggleSwitch"
           v-if="$store.state.auth.token"

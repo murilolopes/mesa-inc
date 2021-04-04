@@ -3,17 +3,7 @@
     <div class="justify-content-center">
       <div id="listOrMap">
         <div v-show="listMode">
-          <div class="container mt-4 mb-4">
-            <b-list-group>
-              <b-list-group-item
-                button
-                :key="place.place_id"
-                v-for="place in $store.state.place.places"
-                @click.prevent="openPlaceDetailsModal(place.place_id)"
-                >{{ place.name }}</b-list-group-item
-              >
-            </b-list-group>
-          </div>
+          <place-list />
         </div>
         <div id="map" v-show="mapMode"></div>
       </div>
@@ -23,9 +13,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import PlaceList from "./../components/PlaceList";
 
 export default {
   name: "Places",
+  components: { PlaceList },
   data() {
     return {
       map: {},
@@ -40,18 +32,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions("place", ["fetchPlaceDetails", "nearbyPlaces"]),
+    ...mapActions("place", ["nearbyPlaces"]),
     ...mapActions("app", ["setPlacesViewMode"]),
     savePosition(position) {
       this.currentPossition = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-    },
-    openPlaceDetailsModal(place_id) {
-      this.fetchPlaceDetails(place_id).then(() => {
-        this.$bvModal.show("placeDetails");
-      });
     },
     loadMap() {
       window.loader.load().then(() => {
