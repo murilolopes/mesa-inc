@@ -4,13 +4,19 @@ import { treatPhotos, treatReviews } from "./../utils/array";
 export const state = {
   selectedPlace: {},
   places: [],
+  bookmarks: [],
 };
 
 export const mutations = {
   SET_SELECTED_PLACE(state, selectedPlace) {
     selectedPlace.photos = treatPhotos(selectedPlace.photos);
     selectedPlace.reviews = treatReviews(selectedPlace.reviews);
-    selectedPlace.bookmark = false;
+
+    state.places.filter((place) => {
+      if (place.place_id === selectedPlace.place_id && place.bookmark)
+        selectedPlace.bookmark = place.bookmark;
+    });
+
     state.selectedPlace = selectedPlace;
   },
   CLEAR_SELECTED_PLACE(state) {
@@ -23,7 +29,13 @@ export const mutations = {
     state.selectedPlace.rating = rating;
   },
   PUSH_BOOKMARK(state) {
-    state.selectedPlace.bookmark = !state.selectedPlace.bookmark;
+    state.places.filter((place) => {
+      if (state.selectedPlace.place_id === place.place_id) {
+        place.bookmark = !place.bookmark;
+        state.selectedPlace.bookmark = !state.selectedPlace.bookmark;
+        state.bookmarks.push(place);
+      }
+    });
   },
   PUSH_PLACES(state, places) {
     state.places = places;
