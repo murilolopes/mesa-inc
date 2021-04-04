@@ -28,14 +28,32 @@ export const mutations = {
   PUSH_RATING(state, rating) {
     state.selectedPlace.rating = rating;
   },
-  PUSH_BOOKMARK(state) {
+  BOOKMARK(state) {
+    let bookmark;
+    const itsAlreadyBookmarked = state.bookmarks.some(
+      (place) => place.place_id === state.selectedPlace.place_id
+    );
+
     state.places.filter((place) => {
-      if (state.selectedPlace.place_id === place.place_id) {
-        place.bookmark = !place.bookmark;
-        state.selectedPlace.bookmark = !state.selectedPlace.bookmark;
-        state.bookmarks.push(place);
+      bookmark = !place.bookmark;
+
+      if (place.place_id === state.selectedPlace.place_id) {
+        place.bookmark = bookmark;
+        state.selectedPlace.bookmark = bookmark;
+        if (!itsAlreadyBookmarked) state.bookmarks.push(place);
       }
     });
+
+    if (itsAlreadyBookmarked) {
+      let bookmarkedIndex;
+
+      state.bookmarks.filter((place, placeIndex) => {
+        if (place.place_id === state.selectedPlace.place_id)
+          bookmarkedIndex = placeIndex;
+      });
+
+      state.bookmarks.splice(bookmarkedIndex, 1);
+    }
   },
   PUSH_PLACES(state, places) {
     state.places = places;
@@ -65,7 +83,7 @@ export const actions = {
   },
   addBookmark({ commit }, place_id) {
     return Place.bookmark(place_id).then(() => {
-      commit("PUSH_BOOKMARK");
+      commit("BOOKMARK");
     });
   },
   nearbyPlaces({ commit }, { lat, lng, radius, map }) {
