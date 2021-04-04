@@ -4,7 +4,7 @@
       toggleable="lg"
       type="dark"
       variant="primary"
-      class="justify-content-xl-between mesa-blue"
+      class="justify-content-xl-between"
     >
       <b-navbar-brand to="/">
         <img
@@ -75,8 +75,8 @@ export default {
   computed: {
     ...mapGetters("app", ["listMode"]),
     switchLabel() {
-      let modo = this.listMode ? "lista" : "mapa";
-      return `Modo ${modo}`;
+      let mode = this.listMode ? "lista" : "mapa";
+      return `Modo ${mode}`;
     },
   },
   watch: {
@@ -90,9 +90,5 @@ export default {
 <style lang="scss">
 .brand-size {
   height: 36px;
-}
-
-.mesa-blue {
-  background-color: #121839 !important;
 }
 </style>

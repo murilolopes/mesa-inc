@@ -32,37 +32,18 @@
       </div>
       <div>
         <b-button-group class="w-100 mb-4">
-          <b-button
-            @click.prevent="toggleReviewInput()"
-            variant="outline-success"
-            >Comentar</b-button
-          >
+          <b-button @click.prevent="openReviewForm()" variant="outline-success">
+            Comentar
+          </b-button>
           <b-button @click.prevent="sendBookmark()" variant="outline-danger">
             <b-icon-heart-fill
               v-if="$store.state.place.selectedPlace.bookmark"
-            ></b-icon-heart-fill>
-            <b-icon-heart v-else variant="danger"> </b-icon-heart>
+            />
+            <b-icon-heart v-else variant="danger" />
           </b-button>
         </b-button-group>
 
-        <div v-show="reviewing" class="mb-4">
-          <b-form-textarea
-            id="textarea"
-            v-model="new_review"
-            placeholder="Escreva aqui seu comentário sobre o local..."
-            rows="3"
-          ></b-form-textarea>
-          <b-button-group class="w-100 mt-3">
-            <b-button
-              @click.prevent="toggleReviewInput()"
-              variant="outline-danger"
-              >Cancelar</b-button
-            >
-            <b-button @click.prevent="sendReview()" variant="outline-success"
-              >Enviar</b-button
-            >
-          </b-button-group>
-        </div>
+        <review-form v-show="reviewing" @closeReviewForm="reviewing = false" />
       </div>
       <b-list-group>
         <b-list-group-item
@@ -86,42 +67,23 @@
 
 <script>
 import { mapActions } from "vuex";
+import ReviewForm from "./../components/ReviewForm";
 
 export default {
   name: "NavBar",
+  components: { ReviewForm },
   data() {
     return {
       rating: 0,
-      new_review: "",
       reviewing: false,
       bookmark: false,
     };
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    ...mapActions("place", [
-      "clearSelectedPlace",
-      "addReview",
-      "addRating",
-      "addBookmark",
-    ]),
+    ...mapActions("place", ["clearSelectedPlace", "addRating", "addBookmark"]),
     callLogout() {
       this.logout().then(() => this.$router.push({ name: "Login" }));
-    },
-    toggleReviewInput() {
-      this.reviewing = !this.reviewing;
-      this.new_review = "";
-    },
-    sendReview() {
-      const payload = {
-        place_id: this.selectedPlace.place_id,
-        review: {
-          author_name: this.$store.state.auth.loggedUser.first_name,
-          relative_time_description: "Segundos atrás",
-          text: this.new_review,
-        },
-      };
-      this.addReview(payload).then(() => this.toggleReviewInput());
     },
     sendNewRating(rating) {
       this.addRating({ place_id: this.selectedPlace.place_id, rating });
@@ -129,8 +91,8 @@ export default {
     sendBookmark() {
       this.addBookmark(this.selectedPlace.place_id);
     },
-    asd(photo) {
-      return `background: url(${photo});`;
+    openReviewForm() {
+      this.reviewing = !this.reviewing;
     },
   },
   computed: {
