@@ -45,22 +45,7 @@
 
         <review-form v-show="reviewing" @closeReviewForm="reviewing = false" />
       </div>
-      <b-list-group>
-        <b-list-group-item
-          class="flex-column align-items-start"
-          v-for="(review, reviewIndex) in orderedReviews"
-          :key="reviewIndex"
-        >
-          <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ review.author_name }}</h6>
-            <small>{{ review.relative_time_description }}</small>
-          </div>
-
-          <p class="mb-1">
-            {{ review.text }}
-          </p>
-        </b-list-group-item>
-      </b-list-group>
+      <review-list />
     </b-modal>
   </div>
 </template>
@@ -68,10 +53,11 @@
 <script>
 import { mapActions } from "vuex";
 import ReviewForm from "./../components/ReviewForm";
+import ReviewList from "./../components/ReviewList";
 
 export default {
   name: "NavBar",
-  components: { ReviewForm },
+  components: { ReviewForm, ReviewList },
   data() {
     return {
       rating: 0,
