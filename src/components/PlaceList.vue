@@ -4,7 +4,7 @@
       <b-list-group-item
         button
         :key="place.place_id"
-        v-for="place in $store.state.place.places"
+        v-for="place in places"
         @click.prevent="openPlaceDetailsModal(place.place_id)"
         >{{ place.name }}</b-list-group-item
       >
@@ -17,6 +17,11 @@ import { mapActions } from "vuex";
 
 export default {
   name: "PlaceList",
+  props: {
+    dataList: {
+      required: false,
+    },
+  },
   data() {
     return {
       rating: 0,
@@ -33,6 +38,11 @@ export default {
     },
   },
   computed: {
+    places() {
+      if (this.dataList) return this.dataList;
+
+      return this.$store.state.place.places;
+    },
     selectedPlace() {
       return this.$store.state.place.selectedPlace;
     },

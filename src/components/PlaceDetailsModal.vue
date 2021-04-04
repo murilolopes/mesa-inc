@@ -38,8 +38,10 @@
             >Comentar</b-button
           >
           <b-button @click.prevent="sendBookmark()" variant="outline-danger">
-            <b-icon-heart v-if="selectedPlace.bookmark"> </b-icon-heart>
-            <b-icon-heart-fill v-else variant="danger"></b-icon-heart-fill>
+            <b-icon-heart-fill
+              v-if="$store.state.place.selectedPlace.bookmark"
+            ></b-icon-heart-fill>
+            <b-icon-heart v-else variant="danger"> </b-icon-heart>
           </b-button>
         </b-button-group>
 
@@ -92,6 +94,7 @@ export default {
       rating: 0,
       new_review: "",
       reviewing: false,
+      bookmark: false,
     };
   },
   methods: {
@@ -124,7 +127,7 @@ export default {
       this.addRating({ place_id: this.selectedPlace.place_id, rating });
     },
     sendBookmark() {
-      this.addBookmark({ place_id: this.selectedPlace.place_id });
+      this.addBookmark(this.selectedPlace.place_id);
     },
     asd(photo) {
       return `background: url(${photo});`;
