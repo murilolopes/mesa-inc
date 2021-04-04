@@ -56,6 +56,15 @@ export const mutations = {
     }
   },
   PUSH_PLACES(state, places) {
+    if (state.places.length) {
+      state.places.filter((place) => {
+        places.filter((newPlace) => {
+          if (newPlace.place_id === place.place_id)
+            newPlace.bookmark = place.bookmark;
+        });
+      });
+    }
+
     state.places = places;
   },
 };
