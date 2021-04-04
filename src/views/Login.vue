@@ -22,9 +22,12 @@
                   class="form-control"
                   placeholder="Email"
                   type="email"
-                  v-model="loginForm.email"
+                  v-model="$v.loginForm.email.$model"
                   required
                 />
+                <div class="text-danger" v-if="$v.loginForm.email.$error">
+                  <span>Email inválido</span>
+                </div>
               </div>
               <div class="form-group">
                 <label>Sua senha</label>
@@ -32,9 +35,12 @@
                   class="form-control"
                   placeholder="******"
                   type="password"
-                  v-model="loginForm.password"
+                  v-model="$v.loginForm.password.$model"
                   required
                 />
+                <div class="text-danger" v-if="$v.loginForm.password.$error">
+                  <span>Campo obrigatório</span>
+                </div>
               </div>
               <div class="form-group">
                 <button
@@ -42,6 +48,7 @@
                   class="btn btn-primary btn-block"
                   id="load2"
                   data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order"
+                  :disabled="$v.loginForm.$invalid"
                 >
                   Entrar
                 </button>
@@ -56,6 +63,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { required, email } from "vuelidate/lib/validators";
 
 export default {
   name: "Login",
@@ -68,12 +76,24 @@ export default {
       },
     };
   },
+  validations: {
+    loginForm: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+      },
+    },
+  },
   methods: {
     ...mapActions("auth", ["login"]),
     async sendLogin() {
-      await this.login({ ...this.loginForm })
-        .then(() => this.$router.push({ name: "Places" }))
-        .catch((error) => (this.loginFormError = error.response.data.error));
+      if (!this.$v.loginForm.$invalid)
+        await this.login({ ...this.loginForm })
+          .then(() => this.$router.push({ name: "Places" }))
+          .catch((error) => (this.loginFormError = error.response.data.error));
     },
   },
   computed: {

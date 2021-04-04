@@ -8,6 +8,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { Loader } from "@googlemaps/js-api-loader";
+import Vuelidate from "vuelidate";
+
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
