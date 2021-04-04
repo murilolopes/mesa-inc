@@ -36,6 +36,11 @@ const routes = [
     name: "Places",
     component: () => import("../views/Places.vue"),
   },
+  {
+    path: "/bookmarks",
+    name: "Places",
+    component: () => import("../views/Bookmarks.vue"),
+  },
 ];
 
 const router = new VueRouter({
