@@ -15,7 +15,7 @@ Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
 window.loader = new Loader({
-  apiKey: "AIzaSyB-PRLv1O1Qlj-_q2iVu_kxDIH1pa5ypwo",
+  apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
   version: "weekly",
   libraries: ["places"],
 });
