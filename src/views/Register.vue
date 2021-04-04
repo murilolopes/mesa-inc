@@ -14,7 +14,7 @@
                 <input
                   name="first_name"
                   class="form-control"
-                  :class="invalidInput('first_name')"
+                  :class="invalidInput('registerForm', 'first_name')"
                   placeholder="Nome"
                   type="text"
                   v-model="$v.registerForm.first_name.$model"
@@ -30,7 +30,7 @@
                 <input
                   name="last_name"
                   class="form-control"
-                  :class="invalidInput('last_name')"
+                  :class="invalidInput('registerForm', 'last_name')"
                   placeholder="Sobrenome"
                   type="text"
                   v-model="$v.registerForm.last_name.$model"
@@ -46,7 +46,7 @@
                 <input
                   name="email"
                   class="form-control"
-                  :class="invalidInput('email')"
+                  :class="invalidInput('registerForm', 'email')"
                   placeholder="Email address"
                   type="email"
                   v-model="$v.registerForm.email.$model"
@@ -75,7 +75,7 @@
               <div class="form-group">
                 <input
                   class="form-control"
-                  :class="invalidInput('password')"
+                  :class="invalidInput('registerForm', 'password')"
                   placeholder="Crie uma senha"
                   type="password"
                   v-model="$v.registerForm.password.$model"
@@ -87,7 +87,7 @@
               <div class="form-group">
                 <input
                   class="form-control"
-                  :class="invalidInput('confirm_password')"
+                  :class="invalidInput('registerForm', 'confirm_password')"
                   placeholder="Repita a senha"
                   type="password"
                   v-model="$v.registerForm.confirm_password.$model"
@@ -122,9 +122,11 @@
 <script>
 import { mapActions } from "vuex";
 import { required, email, sameAs } from "vuelidate/lib/validators";
+import validateMixins from "./../utils/mixins/validateMethods";
 
 export default {
   name: "Register",
+  mixins: [validateMixins],
   data() {
     return {
       registerFormError: "",
@@ -167,9 +169,6 @@ export default {
           .catch(
             (error) => (this.registerFormError = error.response.data.error)
           );
-    },
-    invalidInput(field) {
-      return this.$v.registerForm[field].$error ? "is-invalid" : "";
     },
   },
   computed: {

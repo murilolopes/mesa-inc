@@ -20,6 +20,7 @@
                 <input
                   name="email"
                   class="form-control"
+                  :class="invalidInput('loginForm', 'email')"
                   placeholder="Email"
                   type="email"
                   v-model="$v.loginForm.email.$model"
@@ -33,6 +34,7 @@
                 <label>Sua senha</label>
                 <input
                   class="form-control"
+                  :class="invalidInput('loginForm', 'password')"
                   placeholder="******"
                   type="password"
                   v-model="$v.loginForm.password.$model"
@@ -64,9 +66,11 @@
 <script>
 import { mapActions } from "vuex";
 import { required, email } from "vuelidate/lib/validators";
+import validateMixins from "./../utils/mixins/validateMethods";
 
 export default {
   name: "Login",
+  mixins: [validateMixins],
   data() {
     return {
       loginFormError: "",
