@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <div class="">
-      <router-view />
-    </div>
+    <router-view />
     <place-details-modal></place-details-modal>
   </div>
 </template>

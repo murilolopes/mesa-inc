@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="profile-div">
       <aside class="col-sm-4">
         <div class="card">
           <article class="card-body">
@@ -105,3 +105,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.profile-div {
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

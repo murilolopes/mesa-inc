@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="row">
-      <aside class="col-sm-4">
+    <div class="login-div">
+      <div class="col-sm-4">
         <div class="card">
           <article class="card-body">
             <router-link
@@ -49,7 +49,7 @@
             </form>
           </article>
         </div>
-      </aside>
+      </div>
     </div>
   </div>
 </template>
@@ -83,3 +83,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.login-div {
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
