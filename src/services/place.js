@@ -7,9 +7,10 @@ export class Place {
     return new Promise((resolve) => {
       const request = {
         placeId: place_id,
-        fields: ["name", "rating", "reviews", "photos"],
+        fields: ["place_id", "name", "rating", "reviews", "photos"],
       };
       window.placesService.getDetails(request, (results) => {
+        results.bookmark = false;
         resolve(results);
       });
     });
