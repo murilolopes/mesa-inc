@@ -19,12 +19,15 @@
                 <input
                   name="first_name"
                   class="form-control"
-                  :class="invalidInput('first_name')"
+                  :class="invalidInput('profileForm', 'first_name')"
                   placeholder="Nome"
                   type="text"
                   v-model="$v.profileForm.first_name.$model"
                 />
-                <div class="text-danger" v-if="$v.profileForm.last_name.$error">
+                <div
+                  class="text-danger"
+                  v-if="$v.profileForm.first_name.$error"
+                >
                   <span>Campo obrigatório</span>
                 </div>
               </div>
@@ -32,7 +35,7 @@
                 <input
                   name="last_name"
                   class="form-control"
-                  :class="invalidInput('last_name')"
+                  :class="invalidInput('profileForm', 'last_name')"
                   placeholder="Sobrenome"
                   type="text"
                   v-model="$v.profileForm.last_name.$model"
@@ -45,12 +48,12 @@
                 <input
                   name="email"
                   class="form-control"
-                  :class="invalidInput('email')"
+                  :class="invalidInput('profileForm', 'email')"
                   placeholder="Email address"
                   type="email"
                   v-model="$v.profileForm.email.$model"
                 />
-                <div class="text-danger" v-if="$v.profileForm.last_name.$error">
+                <div class="text-danger" v-if="$v.profileForm.email.$error">
                   <span>Campo obrigatório</span>
                 </div>
               </div>
@@ -91,9 +94,11 @@
 <script>
 import { mapActions } from "vuex";
 import { required, email } from "vuelidate/lib/validators";
+import validateMixins from "./../utils/mixins/validateMethods";
 
 export default {
   name: "Profile",
+  mixins: [validateMixins],
   data() {
     return {
       profileFormError: "",
@@ -134,9 +139,6 @@ export default {
     },
     fillForm() {
       this.profileForm = Object.assign({}, this.$store.state.auth.loggedUser);
-    },
-    invalidInput(field) {
-      return this.$v.profileForm[field].$error ? "is-invalid" : "";
     },
   },
   computed: {
